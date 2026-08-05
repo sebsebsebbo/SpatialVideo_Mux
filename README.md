@@ -22,8 +22,9 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 This app is distributed outside the Mac App Store and is **not notarized**, so macOS
 Gatekeeper will warn on first launch. To open it:
 
-1. Move **SpatialVideo Mux.app** to your Applications folder.
-2. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
+1. **Uncompress zip file** SpatialVideo_Mux-macOS-arm64-v1.0.0.zip and check its contents is SpatialVideo_Mux-macOS-arm64-v1.0.0.app
+2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.0.app** to your Applications folder.
+3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
 
 If it still won't open, run this in Terminal to clear the download quarantine flag:
 
@@ -37,6 +38,11 @@ xattr -dr com.apple.quarantine "/Applications/SpatialVideo Mux.app"
 2. Pick **3D HSBS** or **3D FSBS**.
 3. Click **Export Video** and choose where to save.
 4. Upload the result to YouTube — it will be detected as 3D automatically.
+
+
+**Important note**
+Spatial videos recorded on iPhone models 15 Pro and up can be transferred using the Airdrop function into macOS. I’m not fortunate enough to have tested the Apple Vision Pro so I don’t know if its recorded Spatial videos work in my app. 
+
 
 ## Built with FFmpeg and x264 within Xcode August 2026.
 
