@@ -38,16 +38,6 @@ xattr -dr com.apple.quarantine "/Applications/SpatialVideo Mux.app"
 3. Click **Export Video** and choose where to save.
 4. Upload the result to YouTube — it will be detected as 3D automatically.
 
-## Support this app 💛
-
-I'm a solo developer building this in my spare time. If it's useful to you, a tip
-genuinely helps:
-
-- **Ko‑fi:** https://ko-fi.com/ohsebseb
-
-
-_(No pressure — the app is and always will be free to use.)_
-
 ## Built with FFmpeg and x264 within Xcode August 2026.
 
 This app bundles and runs [FFmpeg](https://ffmpeg.org) as a **separate program** —
@@ -67,11 +57,16 @@ possible. 🙏
 
 x264 and FFmpeg are licensed under: The GNU General Public License v3.0 (GPLv3).
 
-The x264 Project: https://www.videolan.org/developers/x264.html Copyright (C) 2003-2026 x264 project
-The FFmpeg Project https://ffmpeg.org Copyright (c) 2000-2026 the FFmpeg developers
+The x264 Project: https://www.videolan.org/developers/x264.html Copyright (C) 2003-2026 x264 project.
+
+The FFmpeg Project https://ffmpeg.org Copyright (c) 2000-2026 the FFmpeg project.
 
 The corresponding source code for the bundled GPL components is available at:
+
 The x264 Project: https://code.videolan.org/videolan/x264
+
 FFmpeg: https://github.com/FFmpeg/FFmpeg/tree/n9.0
 
-With thanks to the FFmpeg development team and the x264 project for their software, and for both my partner Matt for suffering through this and Claude for helping me persevere.
+
+
+With thanks to both the FFmpeg development and the x264 project for their software, and for both my partner Matt for suffering through this and Claude for helping me persevere.
