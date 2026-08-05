@@ -44,7 +44,7 @@ I'm a solo developer building this in my spare time. If it's useful to you, a ti
 genuinely helps:
 
 - **Ko‑fi:** https://ko-fi.com/ohsebseb
-- **GitHub Sponsors:** https://github.com/sponsors/ohsebseb
+
 
 _(No pressure — the app is and always will be free to use.)_
 
