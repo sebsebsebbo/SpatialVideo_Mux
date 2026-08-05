@@ -10,7 +10,7 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 |    Option   | Per‑eye size |             Output          |                   Use               |
 |-------------|--------------|-----------------------------|-------------------------------------|
 | **3D HSBS** |   960×1080   | 1920×1080 half side‑by‑side | Best for YouTube upload / VR / 3D TV|
-| **3D FSBS** |   1920×1080  | 3840×1080 full side‑by‑side | Full‑resolution per eye ¯\_(ツ)_/¯ _|
+| **3D FSBS** |   1920×1080  | 3840×1080 full side‑by‑side | Full‑resolution per eye             |
 
 ## Requirements
 
