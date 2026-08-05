@@ -1,4 +1,4 @@
-# SpatialVideo Mux
+# SpatialVideo_Mux
 
 A small macOS app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link.
 
