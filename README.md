@@ -65,8 +65,6 @@ possible. 🙏
 
 **SpatialVideo Mux is copyright software.** Copyright © 2026 Sebastian Gonzalez.
 
-All rights reserved — see [LICENSE](LICENSE).
-
 x264 and FFmpeg are licensed under: The GNU General Public License v3.0 (GPLv3).
 
 The x264 Project: https://www.videolan.org/developers/x264.html Copyright (C) 2003-2026 x264 project
