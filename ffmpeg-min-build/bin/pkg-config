@@ -1,0 +1,46 @@
+#!/bin/sh
+# Minimal pkg-config shim for the SpatialVideo Mux ffmpeg build.
+# It only knows about the static Homebrew x264. Any other module → "not found".
+# This is a BUILD-TIME helper only; nothing here ships in the app.
+
+X264_PREFIX="/opt/homebrew/opt/x264"
+X264_VER="0.164.3108"
+
+# pkg-config's own version probe (no module requested).
+case " $* " in
+  *" --version "*) echo "0.29.2"; exit 0 ;;
+esac
+
+# Reject anything that asks about a module other than x264.
+want_x264=0
+for a in "$@"; do
+  case "$a" in
+    -*) : ;;            # option flag, ignore
+    x264) want_x264=1 ;;
+    *) exit 1 ;;        # some other module → unknown
+  esac
+done
+[ "$want_x264" = 1 ] || exit 1
+
+# Version query.
+case " $* " in
+  *" --modversion "*) echo "$X264_VER"; exit 0 ;;
+esac
+
+# Flag queries (existence/version predicates fall through to a clean exit 0).
+out=""
+case " $* " in
+  *" --cflags "*) out="$out -I$X264_PREFIX/include -DX264_API_IMPORTS" ;;
+esac
+case " $* " in
+  *" --libs "*)
+    # Hand the linker the static archive by absolute path so it can't pick the
+    # co-located libx264.*.dylib (which -lx264 would prefer) — keeps ffmpeg self-contained.
+    out="$out $X264_PREFIX/lib/libx264.a"
+    case " $* " in
+      *" --static "*) out="$out -lpthread -lm -ldl" ;;
+    esac
+  ;;
+esac
+[ -n "$out" ] && echo "$out"
+exit 0
