@@ -1,7 +1,3 @@
-//
-//  MyFirstAppApp.swift
-//  MyFirstApp
-//
 //  Created by Sebastian Gonzalez Agero on 27/07/2026.
 //
 //

@@ -11,10 +11,10 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 
 ## Formats
 
-|    Option   | Per‑eye size |             Output          |                   Use               |
-|-------------|--------------|-----------------------------|-------------------------------------|
-| **3D HSBS** |   960×1080   | 1920×1080 half side‑by‑side | Best for YouTube upload / VR / 3D TV|
-| **3D FSBS** |   1920×1080  | 3840×1080 full side‑by‑side | Full‑resolution per eye             |
+|    Option   | Per‑eye size |             Output          |               Use               |
+|-------------|--------------|-----------------------------|---------------------------------|
+| **3D HSBS** |   960×1080   | 1920×1080 half side‑by‑side | Best for YouTube upload for VR  |
+| **3D FSBS** |   1920×1080  | 3840×1080 full side‑by‑side | Full‑resolution per eye         |
 
 ## Requirements
 
@@ -26,22 +26,19 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 This app is distributed outside the Mac App Store and is **not notarized**, so macOS
 Gatekeeper will warn on first launch. To open it:
 
-1. **Uncompress zip file** SpatialVideo_Mux-macOS-arm64-v1.0.0.zip and check its contents is SpatialVideo_Mux-macOS-arm64-v1.0.0.app
+1. **Uncompress zip file** SpatialVideo_Mux-macOS-arm64-v1.0.6.zip and check its contents is SpatialVideo_Mux-macOS-arm64-v1.0.0.app
 2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.0.app** to your Applications folder.
 3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
 
-If it still won't open, run this in Terminal to clear the download quarantine flag:
-
-```bash
-xattr -dr com.apple.quarantine "/Applications/SpatialVideo Mux.app"
-```
 
 ## How to use
 
-1. Click **Select Spatial Video** and choose an MV‑HEVC `.mov`.
+1. Click **Select Spatial Video** and choose an iPhone Spatial recorded video.
 2. Pick **3D HSBS** or **3D FSBS**.
-3. Click **Export Video** and choose where to save.
-4. Upload the result to YouTube — it will be detected as 3D automatically.
+3. **Enable 3D YouTube injection tag** when uploading to YouTube for VR playback.
+4. Click **Export Video** and choose where to save.
+5. Upload the result to YouTube — it will be detected as 3D automatically.
+6. Open YouTube VR app and playback your video to watch it with third dimension features added.
 
 
 **Important note**

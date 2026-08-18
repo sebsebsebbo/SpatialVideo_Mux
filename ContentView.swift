@@ -8,8 +8,9 @@ import AVFoundation
 // Defining our exact supported formats. Using 'Identifiable' and 'CaseIterable'
 // makes it trivial for SwiftUI to render this dynamically in a menu.
 enum ExportFormat: String, CaseIterable, Identifiable {
-    case hsbs = "3D HSBS"
-    case fsbs = "3D FSBS"
+    case fsbs = "FSBS"
+    case hsbs = "HSBS"
+
 
     var id: Self { self }
 
@@ -29,8 +30,8 @@ enum ExportFormat: String, CaseIterable, Identifiable {
 
     var description: String {
         switch self {
-        case .hsbs: return "Half Side-by-side\n Upload to YouTube for best VR and 3D TV playback."
-        case .fsbs: return "Full Side-by-side\n Full resolution left and right eye (1920×1080 each view) mounted side by side. Not great for Youtube 3D playback."
+        case .fsbs: return "Full Side-by-side\n Upload FSBS to YouTube for best VR playback (correct 16:9 aspect ratio)."
+        case .hsbs: return "Half Side-by-side\n Do not upload HSBS to YouTube as this squeezes the image."
         }
     }
 }
@@ -38,12 +39,14 @@ enum ExportFormat: String, CaseIterable, Identifiable {
 // Custom Error types so if the pipeline fails, we know exactly which step broke
 enum ExportError: Error, LocalizedError {
     case ffmpegMissing
-    case ffmpegFailed(Int)
+    case ffmpegFailed(code: Int, detail: String)
 
     var errorDescription: String? {
         switch self {
         case .ffmpegMissing: return "FFmpeg binary is missing from the App Bundle."
-        case .ffmpegFailed(let code): return "FFmpeg process failed with exit code \(code)."
+        case .ffmpegFailed(let code, let detail):
+            let reason = detail.isEmpty ? "" : "\n\(detail)"
+            return "FFmpeg process failed with exit code \(code).\(reason)"
         }
     }
 }
@@ -79,8 +82,9 @@ struct ContentView: View {
     @State private var isShowingPicker = false
     @State private var selectedVideoURL: URL?
     @State private var player: AVPlayer?
-    @State private var selectedFormat: ExportFormat = .hsbs
-    
+    @State private var selectedFormat: ExportFormat = .fsbs
+    @State private var enable3DTag = true   // Inject the stereo_mode 3D tag on export (stage 2)
+
     // NEW: Tracks export state so we can show a progress bar and lock the UI
     @State private var isExporting = false
     @State private var exportMessage = ""
@@ -148,6 +152,14 @@ struct ContentView: View {
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
+
+                    // When ticked, stage 2 injects the stereo_mode 3D tag so
+                    // YouTube treats the upload as side-by-side 3D. Unticked exports
+                    // the plain side-by-side video with no tag.
+                    Toggle("Enable 3D YouTube injection tag", isOn: $enable3DTag)
+                        .toggleStyle(.checkbox)
+                        .disabled(isExporting)
+                        .padding(.top, 4)
                 }
                 .padding(.bottom, 10)
 
@@ -162,7 +174,7 @@ struct ContentView: View {
                 VStack(spacing: 2) {
                     Text("Remember to UPLOAD to YouTube and SHARE your 3D Videos!")
                         .bold()
-                    Text("**Tell your friends** to **watch in VR or on 3DTV!**")
+                    Text("**Tell your friends** to **watch in VR!!**")
                 }
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -316,6 +328,8 @@ struct ContentView: View {
         guard let sourceURL = selectedVideoURL else { return }
 
         let savePanel = NSSavePanel()
+        // MP4 output — the proven format for YouTube SBS 3D. When 3D injection is
+        // enabled the H.264 frame-packing SEI is written into this .mp4.
         savePanel.allowedContentTypes = [.mpeg4Movie]
         savePanel.nameFieldStringValue = "YouTube_3D_Video.mp4"
         savePanel.title = "Save Final 3D Video"
@@ -349,6 +363,7 @@ struct ContentView: View {
                             source: sourceURL,
                             destination: destinationURL,
                             format: selectedFormat,
+                            injectTag: enable3DTag,
                             onProgress: onProgress
                         )
                         exportProgress = 1.0
@@ -383,7 +398,7 @@ struct LicenseView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var isShowingFullLicense = false   // Presents the full GPL v3 text
 
-    private let ffmpegSourceURL = "https://github.com/FFmpeg/FFmpeg/tree/n9.0"
+    private let ffmpegSourceURL = "https://github.com/FFmpeg/FFmpeg/"
     private let x264SourceURL = "https://code.videolan.org/videolan/x264"
     private let licenseURL = "https://www.gnu.org/licenses/gpl-3.0.html"
     private let authorURL = "https://github.com/sebsebsebbo"
@@ -402,7 +417,7 @@ struct LicenseView: View {
             .foregroundColor(.secondary)
 
             HStack(spacing: 4) {
-                Text("AI Coding:")
+                Text("AI Code:")
                 Link("Claude", destination: URL(string: coAuthorURL)!)
                 Text("·")
                 Text("Prompts & Xcode")
@@ -411,35 +426,34 @@ struct LicenseView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text("This app includes software developed by:")
-                
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("• The x264 Project:")
-                    Text("  https://www.videolan.org/developers/x264.html")
-                    Text("  Copyright (C) 2003-2026 x264 project")
-                        .foregroundColor(.secondary)
-                        .padding(.leading, 12)
-                }
+            
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("• The FFmpeg Project")
-                    Text("  https://ffmpeg.org")
-                    Text("  Copyright (c) 2000-2026 the FFmpeg developers")
+                    Text("This software uses libraries from the FFmpeg project, which is licensed under the GNU General Public License (GPL).")
+                    Text("https://ffmpeg.org")
+                    Text("Copyright (c) 2000-2026 the FFmpeg developers")
                         .foregroundColor(.secondary)
                         .padding(.leading, 12)
                 }
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("x264 and FFmpeg are licensed under:")
-                    Text("The GNU General Public License v3.0 (GPLv3).")
+                    Text("• The x264 Project:")
+                    Text("This software utilizes the x264 video encoding library, copyright © VideoLAN, licensed under the GNU General Public License (GPL).")
+                    Text("https://www.videolan.org/developers/x264.html")
+                    Text("Copyright (C) 2003-2026 x264 project")
+                        .foregroundColor(.secondary)
+                        .padding(.leading, 12)
                 }
+                
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text("The corresponding source code for")
                 Text("the bundled GPL components is available at:")
-                Link("FFmpeg (n9.0)", destination: URL(string: ffmpegSourceURL)!)
+                Link("FFmpeg", destination: URL(string: ffmpegSourceURL)!)
                 Link("x264", destination: URL(string: x264SourceURL)!)
             }
             HStack(spacing:1){
-                Text("With thanks to the FFmpeg development team and the x264 project for their software, and for both my partner Matt for suffering through this and Claude for helping me persevere.")
+                Text("With thanks to the FFmpeg development team and the x264 project for their software, and for both my partner Matt for suffering through this, plus Claude and Gemini for helping me persevere.")
             }
                 .padding(.top, 4)
 
@@ -527,11 +541,14 @@ private nonisolated final class ProgressThrottle: @unchecked Sendable {
 actor ExportManager {
     static let shared = ExportManager()
     
-    // The Master Pipeline: a single FFmpeg pass decodes both MV-HEVC eye views,
-    // scales them, and lays them side by side. `onProgress` reports 0.0...1.0.
+    // The Master Pipeline is a single FFmpeg pass: decode both MV-HEVC eye views,
+    // scale them, lay them side by side, and re-encode to H.264 in an .mp4. When
+    // `injectTag` is true the same pass also writes the H.264 frame-packing SEI.
+    // `onProgress` reports 0.0...1.0.
     func processVideo(source: URL,
                       destination: URL,
                       format: ExportFormat,
+                      injectTag: Bool,
                       onProgress: @escaping @Sendable (Double) -> Void) async throws {
 
         // Overwrite any existing file at the destination.
@@ -540,12 +557,19 @@ actor ExportManager {
         // Total duration lets us translate FFmpeg's progress into a 0...1 fraction.
         let durationSeconds = try await AVURLAsset(url: source).load(.duration).seconds
 
-        try await runFFmpeg(source: source,
-                            destination: destination,
-                            format: format,
-                            duration: durationSeconds,
-                            onProgress: onProgress)
-        onProgress(1.0)
+        do {
+            try await runFFmpeg(source: source,
+                                destination: destination,
+                                format: format,
+                                tag3D: injectTag,
+                                duration: durationSeconds,
+                                onProgress: onProgress)
+            onProgress(1.0)
+        } catch {
+            // Never leave a partial file at the user's chosen location.
+            try? FileManager.default.removeItem(at: destination)
+            throw error
+        }
     }
     
     // MARK: - Spatial Video Validation
@@ -562,43 +586,36 @@ actor ExportManager {
         return characteristics.contains(.containsStereoMultiviewVideo)
     }
 
-    // MARK: - FFmpeg Conversion
-    // Decodes both MV-HEVC eye views with view specifiers, scales each to the
-    // target eye size, stacks them horizontally, and tags the result with
-    // frame-packing=3 for YouTube 3D. The original audio is copied through.
+    // Locates the FFmpeg (arm64) binary bundled into the app at build time. Checks
+    // Contents/MacOS (forAuxiliaryExecutable, Apple's preferred spot for helper
+    // tools) first, then Resources — so either bundling style works. There is no
+    // dev fallback; if the bundled binary is missing we fail fast with ffmpegMissing.
+    private func locateFFmpeg() throws -> URL {
+        guard let ffmpegURL = Bundle.main.url(forAuxiliaryExecutable: "ffmpeg")
+            ?? Bundle.main.url(forResource: "ffmpeg", withExtension: nil) else {
+            throw ExportError.ffmpegMissing
+        }
+        // Log the exact binary being used so it's easy to confirm which build is bundled.
+        print("[SpatialVideo_Mux] Using ffmpeg at: \(ffmpegURL.path)")
+        return ffmpegURL
+    }
+
+    // MARK: - FFmpeg: Build (and optionally tag) the side-by-side video
+    // Decodes both MV-HEVC eye views with view specifiers, scales each to the target
+    // eye size, and stacks them horizontally into a re-encoded H.264 .mp4. Audio is
+    // copied through. When `tag3D` is true, the same encode also writes the H.264
+    // frame-packing SEI (via libx264) for YouTube SBS 3D.
     private func runFFmpeg(source: URL,
                            destination: URL,
                            format: ExportFormat,
+                           tag3D: Bool,
                            duration: Double,
                            onProgress: @escaping @Sendable (Double) -> Void) async throws {
 
-        // 1. Locate the FFmpeg binary packed inside our App Bundle. This is the
-        //    only source used in release builds.
-        //    Checks Contents/MacOS (forAuxiliaryExecutable, Apple's preferred spot
-        //    for helper tools) first, then Resources — so either bundling style works.
-        let ffmpegURL: URL
-        if let bundled = Bundle.main.url(forAuxiliaryExecutable: "ffmpeg")
-            ?? Bundle.main.url(forResource: "ffmpeg", withExtension: nil) {
-            ffmpegURL = bundled
-        } else {
-            #if DEBUG
-            // DEBUG-only convenience: fall back to a local static build so we can
-            // keep iterating without re-bundling on every run. This path (and your
-            // username) are never compiled into a release build.
-            let devFallback = URL(fileURLWithPath: "/Users/sebgonzalez/Documents/Media/Spatial UNBACKEDUP/FFMPEG-arm64/ffmpeg")
-            guard FileManager.default.isExecutableFile(atPath: devFallback.path) else {
-                throw ExportError.ffmpegMissing
-            }
-            ffmpegURL = devFallback
-            #else
-            throw ExportError.ffmpegMissing
-            #endif
-        }
-
         let process = Process()
-        process.executableURL = ffmpegURL
+        process.executableURL = try locateFFmpeg()
 
-        // 2. Only the per-eye size differs between formats (both get frame-packing=3):
+        // Only the per-eye size differs between formats:
         //    - HSBS: 960×1080 per eye  → 1920×1080 total.
         //    - FSBS: 1920×1080 per eye → 3840×1080 total.
         let eyeWidth = (format == .hsbs) ? 960 : 1920
@@ -607,27 +624,43 @@ actor ExportManager {
         // FFmpeg view specifiers pull the two MV-HEVC eyes straight from the source.
         // On these files view 1 is the LEFT eye and view 0 is the RIGHT eye, so we
         // feed view 1 into the left half and view 0 into the right, then stack L | R.
+        // For the tagged YouTube output, normalise the final stacked frame to the
+        // format's full size with square pixels (HSBS 1920x1080, FSBS 3840x1080) so
+        // YouTube reports the expected SBS 3D resolution. This must live inside the
+        // filtergraph — a separate -vf can't touch a -filter_complex output.
+        let totalWidth = eyeWidth * 2   // HSBS: 1920, FSBS: 3840
+        let finalStack = tag3D
+            ? "[l][r]hstack=inputs=2,scale=\(totalWidth):\(eyeHeight),setsar=1[v]"
+            : "[l][r]hstack=inputs=2[v]"
         let filter = "[0:v:0:view:1]scale=\(eyeWidth):\(eyeHeight),setsar=1[l];"
                    + "[0:v:0:view:0]scale=\(eyeWidth):\(eyeHeight),setsar=1[r];"
-                   + "[l][r]hstack=inputs=2[v]"
+                   + finalStack
 
         var arguments: [String] = [
             "-i", source.path,
             "-filter_complex", filter,
-            "-map", "[v]",
+            "-map", "[v]",             // the stacked side-by-side video from the filtergraph
             "-map", "0:a:0?",          // copy the original audio if present ("?" = optional)
-            "-c:v", "libx264",
-            // frame-packing=3 marks the H.264 stream as side-by-side 3D for YouTube.
-            // Applied to both HSBS and FSBS so either uploads correctly.
-            "-x264opts", "frame-packing=3"
+            "-c:v", "libx264",               // Codec
+            "-profile:v", "high",            // Profile
+            "-level", "4.0",                 // Level
+            "-fpsmax", "30",                 // Framerate cap
+            "-pix_fmt", "yuv420p",           // Pixel format
         ]
+        if tag3D {
+            // frame-packing=3 writes the H.264 side-by-side 3D SEI (left eye first,
+            // matching our L|R hstack). This is what YouTube reads for SBS 3D in an
+            // .mp4 container.
+            arguments += ["-x264opts", "frame-packing=3"]
+            
+        }
         // Copy the original audio untouched; -shortest guards against length drift.
         arguments += ["-c:a", "copy", "-shortest"]
         // Ask FFmpeg to emit machine-readable progress to stdout so we can drive the bar.
         arguments += ["-progress", "pipe:1", "-nostats", destination.path]
         process.arguments = arguments
 
-        // 3. Pipe FFmpeg's progress output and translate its `out_time` into a 0...1 fraction.
+        // Pipe FFmpeg's progress output and translate its `out_time` into a 0...1 fraction.
         let progressPipe = Pipe()
         process.standardOutput = progressPipe
         let throttle = ProgressThrottle()
@@ -647,27 +680,43 @@ actor ExportManager {
                 }
             }
         }
+        // Release the pipe handler once the process has finished (or failed).
+        defer { progressPipe.fileHandleForReading.readabilityHandler = nil }
 
-        // 4. Run the terminal process asynchronously. If the surrounding Task is
-        //    cancelled (user hit Cancel), terminate FFmpeg and delete the partial
-        //    output, surfacing the stop as a CancellationError for the UI to handle.
+        try await runProcess(process, cleanupOnCancel: destination)
+    }
+
+    // Runs an FFmpeg process to completion. If the surrounding Task is cancelled
+    // (user hit Cancel), terminates FFmpeg and deletes the partial output at
+    // `cleanupOnCancel`, surfacing the stop as a CancellationError for the UI.
+    private func runProcess(_ process: Process, cleanupOnCancel destination: URL) async throws {
         let processBox = ProcessBox(process)
+        // Capture FFmpeg's stderr so a failure surfaces its real message, not just a
+        // numeric exit code. With -nostats the volume is small, so reading it at
+        // termination won't block the encode.
+        let errorPipe = Pipe()
+        process.standardError = errorPipe
         do {
             try await withTaskCancellationHandler {
                 try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
                     do {
-                        // process.terminationHandler fires automatically when FFmpeg finishes
+                        // terminationHandler fires automatically when FFmpeg finishes.
                         process.terminationHandler = { finishedProcess in
-                            progressPipe.fileHandleForReading.readabilityHandler = nil
-                            if finishedProcess.terminationStatus == 0 {
+                            let status = Int(finishedProcess.terminationStatus)
+                            if status == 0 {
                                 continuation.resume()
                             } else {
-                                continuation.resume(throwing: ExportError.ffmpegFailed(Int(finishedProcess.terminationStatus)))
+                                // Keep the last few non-empty stderr lines — that's where
+                                // FFmpeg prints the actual error.
+                                let data = errorPipe.fileHandleForReading.readDataToEndOfFile()
+                                let detail = (String(data: data, encoding: .utf8) ?? "")
+                                    .split(separator: "\n", omittingEmptySubsequences: true)
+                                    .suffix(4)
+                                    .joined(separator: "\n")
+                                continuation.resume(throwing: ExportError.ffmpegFailed(code: status, detail: detail))
                             }
                         }
-
                         try process.run()
-
                     } catch {
                         continuation.resume(throwing: error)
                     }
@@ -1344,56 +1393,4 @@ copy of the Program in return for a fee.
 
                      END OF TERMS AND CONDITIONS
 
-            How to Apply These Terms to Your New Programs
-
-  If you develop a new program, and you want it to be of the greatest
-possible use to the public, the best way to achieve this is to make it
-free software which everyone can redistribute and change under these terms.
-
-  To do so, attach the following notices to the program.  It is safest
-to attach them to the start of each source file to most effectively
-state the exclusion of warranty; and each file should have at least
-the "copyright" line and a pointer to where the full notice is found.
-
-    <one line to give the program's name and a brief idea of what it does.>
-    Copyright (C) <year>  <name of author>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-Also add information on how to contact you by electronic and paper mail.
-
-  If the program does terminal interaction, make it output a short
-notice like this when it starts in an interactive mode:
-
-    <program>  Copyright (C) <year>  <name of author>
-    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions; type `show c' for details.
-
-The hypothetical commands `show w' and `show c' should show the appropriate
-parts of the General Public License.  Of course, your program's commands
-might be different; for a GUI interface, you would use an "about box".
-
-  You should also get your employer (if you work as a programmer) or school,
-if any, to sign a "copyright disclaimer" for the program, if necessary.
-For more information on this, and how to apply and follow the GNU GPL, see
-<https://www.gnu.org/licenses/>.
-
-  The GNU General Public License does not permit incorporating your program
-into proprietary programs.  If your program is a subroutine library, you
-may consider it more useful to permit linking proprietary applications with
-the library.  If this is what you want to do, use the GNU Lesser General
-Public License instead of this License.  But first, please read
-<https://www.gnu.org/philosophy/why-not-lgpl.html>.
 """#
