@@ -6,7 +6,7 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 (the flag YouTube uses to detect 3D), and copies the original audio.
 
 <Center>
-<img src="SpatialVideo_Mux-macOS-arm64-v1.0.1 screenshot.jpeg" style="width: 50%; height: 50%" alt="Screenshot of SpatialVideo_Mux-macOS-arm64-v1.0.1">
+<img src="SpatialVideo_Mux-macOS-arm64-v1.0.6%20screenshot.png" style="width: 50%; height: 50%" alt="Screenshot of SpatialVideo_Mux-macOS-arm64-v1.0.1">
 </Center>
 
 ## Formats
