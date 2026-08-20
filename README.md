@@ -23,11 +23,11 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 
 ## Install
 
-This app is distributed outside the Mac App Store and is **not notarized**, so macOS
-Gatekeeper will warn on first launch. To open it:
+This app is distributed outside the Mac App Store and is **now apple notarized**. 
+To open it:
 
 1. **Uncompress zip file** SpatialVideo_Mux-macOS-arm64-v1.0.6.zip and check its contents is SpatialVideo_Mux-macOS-arm64-v1.0.0.app
-2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.0.app** to your Applications folder.
+2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.6.app** to your Applications folder.
 3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
 
 
