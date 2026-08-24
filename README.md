@@ -1,6 +1,6 @@
 # SpatialVideo_Mux
 
-A small macOS app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link.
+A small macOS app and larger window 11 app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link.
 
 It extracts the left and right eye views, lays them side by side, tags the stream
 (the flag YouTube uses to detect 3D), and copies the original audio.
@@ -26,16 +26,16 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 This app is distributed outside the Mac App Store and is **now apple notarized**. 
 To open it:
 
-1. **Uncompress zip file** SpatialVideo_Mux-macOS-arm64-v1.0.6.zip and check its contents is SpatialVideo_Mux-macOS-arm64-v1.0.0.app
-2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.6.app** to your Applications folder.
-3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
+1. **Uncompress zip file**
+2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.7** to your Applications folder if using macOS otherwise in Windows just run the SpatialVideo_Mux.exe
+3. macOS : **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
 
 
 ## How to use
 
 1. Click **Select Spatial Video** and choose an iPhone Spatial recorded video.
-2. Pick **3D HSBS** or **3D FSBS**.
-3. **Enable 3D YouTube injection tag** when uploading to YouTube for VR playback.
+2. Pick **3D HSBS** or **3D FSBS** - Description changes depending which type you select.
+3. **Enable 3D YouTube tag** when uploading to YouTube for VR YouTube playback in FSBS.
 4. Click **Export Video** and choose where to save.
 5. Upload the result to YouTube — it will be detected as 3D automatically.
 6. Open YouTube VR app and playback your video to watch it with third dimension features added.
