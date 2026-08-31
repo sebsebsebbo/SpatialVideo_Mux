@@ -24,6 +24,12 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 ## Install
 
 This app is distributed outside the Mac App Store and is **now apple notarized**. 
+To install it:
+
+1. Go to the Releases section on GitHub for this page.
+2. Download the correct version for your operating system: only macOS 15 /26 and Windows 11 tested. 
+
+
 To open it:
 
 1. **Uncompress zip file**
