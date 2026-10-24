@@ -1,6 +1,6 @@
 # SpatialVideo_Mux
 
-A small macOS app and larger window 11 app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link.
+A small macOS app and larger window 11 app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link, which links to the following webpage, but you can do it yourself: <a href="https://youtube.com/upload">https://youtube.com/upload</a>
 
 It extracts the left and right eye views, lays them side by side, tags the stream
 (the flag YouTube uses to detect 3D), and copies the original audio.
@@ -20,12 +20,13 @@ It extracts the left and right eye views, lays them side by side, tags the strea
 
 - **Apple Silicon Mac** (the bundled ffmpeg is arm64).
 - macOS 15 or later.
+- **Microsoft Windows 11** (the bundled ffmpeg is x64).
 
 ## Install
 
-This app is distributed outside the Mac App Store and is **now apple notarized**. 
-To install it:
+For macOS, this app is distributed outside the Mac App Store and is **now apple notarized**. 
 
+To install it:
 1. Go to the Releases section on GitHub for this page.
 2. Download the correct version for your operating system: only macOS 15 /26 and Windows 11 tested. 
 
@@ -33,8 +34,14 @@ To install it:
 To open it:
 
 1. **Uncompress zip file**
-2. Move **SpatialVideo_Mux-macOS-arm64-v1.0.7** to your Applications folder if using macOS otherwise in Windows just run the SpatialVideo_Mux.exe
-3. macOS : **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
+
+**macOS**
+2. **macOS** Move **SpatialVideo_Mux-macOS-arm64-v1.0.7** to your Applications folder
+3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
+  
+**Microsoft Windows**
+2.just run the file SpatialVideo_Mux.exe
+ 
 
 
 ## How to use
@@ -48,8 +55,11 @@ To open it:
 
 
 **Important note**
-Spatial videos recorded on iPhone models 15 Pro and up can be transferred using the Airdrop function into macOS. I’m not fortunate enough to have tested the Apple Vision Pro so I don’t know if its recorded Spatial videos work in my app. 
+**macOS**
+Spatial videos recorded on iPhone models 15 Pro and up can be quickly transferred using the Airdrop function into macOS. I’m not fortunate enough to have tested the Apple Vision Pro so I don’t know if its recorded Spatial videos work in my app.
 
+**Windows**
+Spatial videos will need to be transferred either via USB or other safe forms to your Windows operating system before loading into SpatialVideo_mux.
 
 ## Built with FFmpeg and x264 within Xcode August 2026.
 
