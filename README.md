@@ -108,3 +108,5 @@ The corresponding source code for the bundled GPL components is available at:
 ---
 
 With thanks to the FFmpeg and x264 projects for their software, to my partner Matt for suffering through this, and to Claude for helping me persevere and work on this idea.
+
+![](https://github-visitor-counter-tau.vercel.app/api?username=sebsebsebbo&displayMode=topCountries&theme=github)
