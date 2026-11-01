@@ -90,6 +90,6 @@ The x264 Project: https://code.videolan.org/videolan/x264
 
 FFmpeg: https://github.com/FFmpeg/FFmpeg/tree/n9.0
 
-
+<a href="https://hits.sh/github.com/sebsebsebbo/SpatialVideo_Mux/"><img alt="Hits" src="https://hits.sh/github.com/sebsebsebbo/SpatialVideo_Mux.svg?style=flat-square&label=total%20hits"/></a>
 
 With thanks to both the FFmpeg development and the x264 project for their software, and for both my partner Matt for suffering through this and Claude for helping me persevere.
