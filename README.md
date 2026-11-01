@@ -2,6 +2,9 @@
 
 Converts Apple **spatial (MV‑HEVC) videos**, like those shot on iPhone 15 Pro, iPhone 16 and later (Apple Vision Pro untested), into **3D side‑by‑side** MP4s ready for **YouTube 3D**, VR headsets and 3D TVs.
 
+<img src="SpatialVideo_Mux-macOS-arm64-v1.12-screenshot.png" alt="A screenshot of SpatialVideo_Mux macOS app version 1.12">
+
+
 It extracts the left and right eye views, lays them side by side, tags the stream (the flag YouTube uses to detect 3D), and copies the original audio.
 
 Available for **macOS** (Apple Silicon) and **Windows 11**.
