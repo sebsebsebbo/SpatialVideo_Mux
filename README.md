@@ -16,7 +16,7 @@ Get the latest version from the **[Releases page](https://github.com/sebsebsebbo
 | Your computer | Download this file |
 |---|---|
 | Mac with Apple Silicon (M1 or later), macOS 15 or later | `SpatialVideo_Mux-v1.12-macOS-arm64.zip` |
-| Windows 11 PC (64-bit) | `SpatialVideo_Mux-v1.12-Windows-x64.zip` |
+| Windows 11 PC (64-bit) | `SpatialVideo_Mux-windows-v1.0.8.zip` |
 
 Only macOS 15 / 26 and Windows 11 have been tested.
 
