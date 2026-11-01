@@ -1,95 +1,107 @@
 # SpatialVideo_Mux
 
-A small macOS app and larger window 11 app that converts Apple **spatial (MV‑HEVC) videos** — like those shot on iPhone 15 Pro / 16 / maybe Vision Pro (untested) — into **3D side‑by‑side** MP4s ready to upload to **YouTube 3D** via a provided link, which links to the following webpage, but you can do it yourself: <a href="https://youtube.com/upload">https://youtube.com/upload</a>
+Converts Apple **spatial (MV‑HEVC) videos**, like those shot on iPhone 15 Pro, iPhone 16 and later (Apple Vision Pro untested), into **3D side‑by‑side** MP4s ready for **YouTube 3D**, VR headsets and 3D TVs.
 
-It extracts the left and right eye views, lays them side by side, tags the stream
-(the flag YouTube uses to detect 3D), and copies the original audio.
+It extracts the left and right eye views, lays them side by side, tags the stream (the flag YouTube uses to detect 3D), and copies the original audio.
 
-<Center>
-<img src="SpatialVideo_Mux-macOS-arm64-v1.0.6%20screenshot.png" style="width: 50%; height: 50%" alt="Screenshot of SpatialVideo_Mux-macOS-arm64-v1.0.1">
-</Center>
+Available for **macOS** (Apple Silicon) and **Windows 11**.
 
-## Formats
+## Download
 
-|    Option   | Per‑eye size |             Output          |                        Use                         |
-|-------------|--------------|-----------------------------|----------------------------------------------------|
-| **3D HSBS** |   960×1080   | 1920×1080 half side‑by‑side | For 3D TV and Sharing your 3D content with friends |
-| **3D FSBS** |   1920×1080  | 3840×1080 full side‑by‑side | Best for YouTube upload for VR                     |
+Get the latest version from the **[Releases page](https://github.com/sebsebsebbo/SpatialVideo_Mux/releases/latest)**.
 
-## Requirements
+| Your computer | Download this file |
+|---|---|
+| Mac with Apple Silicon (M1 or later), macOS 15 or later | `SpatialVideo_Mux-v1.12-macOS-arm64.zip` |
+| Windows 11 PC (64-bit) | `SpatialVideo_Mux-v1.12-Windows-x64.zip` |
 
-- **Apple Silicon Mac** (the bundled ffmpeg is arm64).
-- macOS 15 or later.
-- **Microsoft Windows 11** (the bundled ffmpeg is x64).
+Only macOS 15 / 26 and Windows 11 have been tested.
 
 ## Install
 
-For macOS, this app is distributed outside the Mac App Store and is **now apple notarized**. 
+### macOS
+1. Unzip the download.
+2. Move **SpatialVideo_Mux** to your **Applications** folder.
+3. Open it. The app is **notarized by Apple**, so it opens normally. If macOS still asks, right‑click the app → **Open** → **Open** (you only need to do this once).
 
-To install it:
-1. Go to the Releases section on GitHub for this page.
-2. Download the correct version for your operating system: only macOS 15 /26 and Windows 11 tested. 
+### Windows
+1. Unzip the download into a folder (keep all the files together).
+2. Run **SpatialVideo_Mux.exe**.
 
+## Formats
 
-To open it:
-
-1. **Uncompress zip file**
-
-**macOS**
-2. **macOS** Move **SpatialVideo_Mux-macOS-arm64-v1.0.7** to your Applications folder
-3. **Right‑click** the app → **Open** → **Open** again in the dialog. (You only need to do this once.)
-  
-**Microsoft Windows**
-2.just run the file SpatialVideo_Mux.exe
- 
-
+| Option | Per‑eye size | Output | Use |
+|---|---|---|---|
+| **3D HSBS** | 960×1080 | 3840×1080 full side‑by‑side | Best for YouTube upload for VR |
+| **3D FSBS** | 1920×1080 | 1920×1080 half side‑by‑side | High Resolution video however currently plays squashed on YouTube 3D. Likely incompatible with many 3DTVs and other 3D hardware. |
 
 ## How to use
 
-1. Click **Select Spatial Video** and choose an iPhone Spatial recorded video.
-2. Pick **3D HSBS** or **3D FSBS** - Description changes depending which type you select.
-3. **Enable 3D YouTube tag** when uploading to YouTube for VR YouTube playback in FSBS.
-4. Click **Export Video** and choose where to save.
-5. Upload the result to YouTube — it will be detected as 3D automatically.
-6. Open YouTube VR app and playback your video to watch it with third dimension features added.
+1. Click **Select Spatial Video** and choose a spatial video recorded on iPhone.
+2. Click **PREVIEW VIDEO** if you want to check it first.
+3. Pick **3D FSBS** or **3D HSBS**. The description changes depending on which you select.
+4. Tick **Enable 3D YouTube injection tag** when uploading FSBS to YouTube for VR playback.
+5. Click **Export Video** and choose where to save.
+6. Upload the result to YouTube. It will be detected as 3D automatically.
+7. Watch it in the YouTube VR app to see it in 3D.
 
+### Advanced Mode
+Flip the switch from **BASIC BITCH** to **ADVANCED MODE** and a tools panel opens on the right:
 
-**Important note**
-**macOS**
-Spatial videos recorded on iPhone models 15 Pro and up can be quickly transferred using the Airdrop function into macOS. I’m not fortunate enough to have tested the Apple Vision Pro so I don’t know if its recorded Spatial videos work in my app.
+- **Quality slider** – choose between best quality and smaller files.
+- **Batch Queue** – add lots of spatial videos, each with its own format and quality, then convert them all in one go. You get a notification when the whole batch is finished.
 
-**Windows**
-Spatial videos will need to be transferred either via USB or other safe forms to your Windows operating system before loading into SpatialVideo_mux.
+### Getting your videos onto your computer
+- **Mac:** AirDrop spatial videos from your iPhone straight to your Mac.
+- **Windows:** copy them over by USB cable or another safe transfer method.
 
-## Built with FFmpeg and x264 within Xcode August 2026.
+## What's new
 
-This app bundles and runs [FFmpeg](https://ffmpeg.org) as a **separate program** —
-launched at runtime as its own process to decode MV‑HEVC and encode the output. 
-FFmpeg is not linked into the app, and its source is not part of the app's own code.
+See the **[Releases page](https://github.com/sebsebsebbo/SpatialVideo_Mux/releases)** for the full history.
 
-The FFmpeg build used here comes from [FFmpeg](https://github.com/FFmpeg/FFmpeg and is licensed under the **GNU General Public License, version 3**.
-The full corresponding source code for that build is available at:
-**https://github.com/FFmpeg/FFmpeg**
+**v1.12**
+- Updated the HSBS and FSBS descriptions in the app: HSBS is now recommended for YouTube VR (with the 3D tag), and FSBS for 3D TVs and apps like BigScreen Beta.
 
-Huge thanks to **x264 Project and the FFmpeg Development team** — without their work on this app would not be
-possible. 🙏
+**v1.11**
+- **Batch Queue** now shows the total time remaining for all videos, beneath the time for the current video.
+
+**v1.1**
+- New animated retro title screen, with a pop‑out **PREVIEW VIDEO** window.
+- **Advanced Mode**: quality slider and **Batch Queue** with a notification when finished.
+- Fixed the H.264 level for FSBS (3840×1080), so exports play more reliably on TVs and headsets.
+- Better encoding quality and faster‑starting uploads.
+
+## Repository layout
+
+```
+macos/        Xcode project for the macOS app
+windows/      Source for the Windows app
+docs/         Screenshots for this README
+third_party/  FFmpeg / x264 licence text
+```
+
+Finished apps are **not** stored in the repository. They are attached to each release on the Releases page.
+
+## Built with FFmpeg and x264
+
+This app bundles and runs [FFmpeg](https://ffmpeg.org) as a **separate program**, launched at runtime as its own process to decode MV‑HEVC and encode the output. FFmpeg is not linked into the app, and its source is not part of the app's own code.
+
+Huge thanks to the **x264 Project and the FFmpeg development team**. Without their work this app would not be possible. 🙏
 
 ## License
 
-**SpatialVideo Mux is copyright software.** Copyright © 2026 Sebastian Gonzalez.
+**SpatialVideo_Mux is proprietary software.** Copyright © 2026 Sebastian Gonzalez Agero. The source code is published here to read, but may not be copied, modified or redistributed without permission. See [LICENSE](LICENSE).
 
-x264 and FFmpeg are licensed under: The GNU General Public License v3.0 (GPLv3).
+The bundled **FFmpeg** and **x264** are licensed separately under the **GNU General Public License v3.0** (see [third_party/LICENSE-FFmpeg](third_party/LICENSE-FFmpeg)).
 
-The x264 Project: https://www.videolan.org/developers/x264.html Copyright (C) 2003-2026 x264 project.
-
-The FFmpeg Project https://ffmpeg.org Copyright (c) 2000-2026 the FFmpeg project.
+- The x264 Project: https://www.videolan.org/developers/x264.html – Copyright (C) 2003‑2026 x264 project.
+- The FFmpeg Project: https://ffmpeg.org – Copyright (c) 2000‑2026 the FFmpeg project.
 
 The corresponding source code for the bundled GPL components is available at:
 
-The x264 Project: https://code.videolan.org/videolan/x264
+- x264: https://code.videolan.org/videolan/x264
+- FFmpeg: https://github.com/FFmpeg/FFmpeg/tree/n9.0
 
-FFmpeg: https://github.com/FFmpeg/FFmpeg/tree/n9.0
+---
 
-With thanks to both the FFmpeg development and the x264 project for their software, and for both my partner Matt for suffering through this and Claude for helping me persevere.
-
-<a href="https://hits.sh/github.com/sebsebsebbo/SpatialVideo_Mux/"><img alt="Hits" src="https://hits.sh/github.com/sebsebsebbo/SpatialVideo_Mux.svg?style=flat-square&label=total%20hits"/></a>
+With thanks to the FFmpeg and x264 projects for their software, to my partner Matt for suffering through this, and to Claude for helping me persevere and work on this idea.
