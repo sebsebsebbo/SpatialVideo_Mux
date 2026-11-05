@@ -1,0 +1,2 @@
+ffmpeg version N-126239-g88ae625e69-20260821 Copyright (c) 2000-2026 the FFmpeg developers
+built with gcc 15.2.0 (crosstool-NG 1.28.0.23_185f348)
